@@ -1,0 +1,16 @@
+name: "Introduce myself"
+output_dir: "."
+navbar:
+  title: "Home"
+  right:
+    - icon: far fa-file
+      href: CV.pdf
+    - icon: fas fa-envelope
+      href: mailto:yz4184@cumc.columbia.edu.com>
+    - icon: fa-github fa-lg
+      href: https://github.com/Yunlin-Zhou
+output: 
+  html_document:
+    toc: true
+    toc_float: true
+    theme: darkly
