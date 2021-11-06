@@ -1,0 +1,73 @@
+---
+title: "Weather data plots"
+output: 
+  flexdashboard::flex_dashboard:
+    orientation: columns
+    vertical_layout: fill
+    source_code: embeded
+---
+```{r setup, include=FALSE}
+library(flexdashboard)
+library(tidyverse)
+
+library(plotly)
+
+```
+
+
+Column {data-width=650}
+-----------------------------------------------------------------------
+```{r}
+weather_df = 
+  rnoaa::meteo_pull_monitors(
+    c("USW00094728", "USC00519397", "USS0023B17S"),
+    var = c("PRCP", "TMIN", "TMAX"), 
+    date_min = "2017-01-01",
+    date_max = "2017-12-31") %>%
+  mutate(
+    name = recode(
+      id, 
+      USW00094728 = "CentralPark_NY", 
+      USC00519397 = "Waikiki_HA",
+      USS0023B17S = "Waterhole_WA"),
+    tmin = tmin / 10,
+    tmax = tmax / 10) %>%
+  select(name, id, everything())
+```
+
+
+
+### Chart A
+
+```{r}
+tmax_tmin_point = 
+  plot_ly(weather_df,
+    x = ~tmin, y = ~tmax, type = "scatter", mode = "markers",
+    color = ~name, alpha = 0.5
+  )
+
+tmax_tmin_point
+```
+
+Column {data-width=350}
+-----------------------------------------------------------------------
+
+### Chart B
+
+```{r}
+name_tmin_box = 
+  plot_ly(weather_df,
+    x = ~name, y = ~tmin, type = "box", color = ~name)
+
+name_tmin_box
+```
+
+### Chart C
+
+```{r}
+tmax_hist = 
+  plot_ly(weather_df,
+    x = ~tmax, type = "histogram", color = ~name)
+
+tmax_hist
+```

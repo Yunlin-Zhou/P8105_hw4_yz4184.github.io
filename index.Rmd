@@ -1,11 +1,6 @@
 ---
 title: "P8105 Homework 4 Website"
 author: Yunlin Zhou yz4184
-output: 
-  html_document:
-    toc: true
-    toc_float: true
-    theme: darkly
 ---
 
 *Hi~  Welcome to my website!*
@@ -20,3 +15,72 @@ Hi ٩(๑❛ᴗ❛๑)۶  Welcome to my website!
 My name is Yunlin Zhou. I am a student in Biostatistics Ms program. This is my first website. You can find my [Resume](./CV.pdf) here, or you can click on the file icon on the top to download it. 
 
 If you want to send me an e-mail, please click on the envelope icon on the top. Also, you can see all my homework in P8105 in my [github](https://github.com/Yunlin-Zhou).
+
+
+## Here are some plots of weather data
+
+You can also see those plots by clicking on plot icon.
+
+```{r echo = FALSE, message = FALSE, warning = FALSE}
+library(tidyverse)
+library(plotly)
+weather_df = 
+  rnoaa::meteo_pull_monitors(
+    c("USW00094728", "USC00519397", "USS0023B17S"),
+    var = c("PRCP", "TMIN", "TMAX"), 
+    date_min = "2017-01-01",
+    date_max = "2017-12-31") %>%
+  mutate(
+    name = recode(
+      id, 
+      USW00094728 = "CentralPark_NY", 
+      USC00519397 = "Waikiki_HA",
+      USS0023B17S = "Waterhole_WA"),
+    tmin = tmin / 10,
+    tmax = tmax / 10) %>%
+  select(name, id, everything())
+```
+
+### Temperature range
+
+Temperature range in different days in different places
+
+```{r echo = FALSE, message = FALSE, warning = FALSE}
+
+tmax_tmin_point = 
+  plot_ly(weather_df,
+    x = ~tmin, y = ~tmax, type = "scatter", mode = "markers",
+    color = ~name, alpha = 0.5
+  )
+
+tmax_tmin_point
+
+```
+
+### The minimum temperature
+
+The minimum temperature in different days in different places
+
+```{r echo = FALSE, message = FALSE, warning = FALSE}
+
+name_tmin_box = 
+  plot_ly(weather_df,
+    x = ~name, y = ~tmin, type = "box", color = ~name)
+
+name_tmin_box
+
+```
+
+### The maximum temperature
+
+The maximum temperature in different days in different places
+
+```{r echo = FALSE, message = FALSE, warning = FALSE}
+
+tmax_hist = 
+  plot_ly(weather_df,
+    x = ~tmax, type = "histogram", color = ~name)
+
+tmax_hist
+
+```

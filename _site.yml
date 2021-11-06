@@ -3,6 +3,8 @@ output_dir: "."
 navbar:
   title: "Home"
   right:
+    - text: "Plot"
+      href: plot.html
     - icon: far fa-file
       href: CV.pdf
     - icon: fas fa-envelope
@@ -13,4 +15,4 @@ output:
   html_document:
     toc: true
     toc_float: true
-    theme: darkly
+    theme: lumen
